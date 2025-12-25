@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vending System - Управление торговыми аппаратами</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- Экран авторизации -->
+        <div id="auth-screen" class="screen active">
+            <div class="auth-background">
+                <div class="floating-shapes">
+                    <div class="shape shape-1"></div>
+                    <div class="shape shape-2"></div>
+                    <div class="shape shape-3"></div>
+                </div>
+            </div>
+            <div class="auth-container">
+                <div class="language-switcher-auth">
+                    <button class="lang-btn active" data-lang="ru">RU</button>
+                    <button class="lang-btn" data-lang="en">EN</button>
+                </div>
+                
+                <div class="logo-section">
+                    <div class="logo-icon">⚙️</div>
+                    <h1 data-i18n="system_title">Vending System</h1>
+                    <p data-i18n="system_subtitle">Управление торговыми аппаратами</p>
+                </div>
+                
+                <form id="login-form" class="auth-form">
+                    <div class="form-header">
+                        <h2 data-i18n="login_title">Вход в систему</h2>
+                        <p data-i18n="login_subtitle">Введите ваши учетные данные</p>
+                    </div>
+                    
+                    <div class="input-group">
+                        <div class="input-icon"></div>
+                        <input type="email" id="login-email" data-i18n-placeholder="email_placeholder" required>
+                    </div>
+                    <div class="input-group">
+                        <div class="input-icon"></div>
+                        <input type="password" id="login-password" data-i18n-placeholder="password_placeholder" required>
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        <span data-i18n="login_button">Войти в систему</span>
+                        <div class="btn-loader"></div>
+                    </button>
+                    
+                    <div class="auth-footer">
+                        <p data-i18n="test_credentials">Тестовый доступ: admin@vending.com / admin123</p>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Основной экран -->
+        <div id="main-screen" class="screen">
+            <!-- Боковая панель -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <div class="logo">
+                        <div class="logo-icon">⚙️</div>
+                        <h2 data-i18n="system_title">Vending System</h2>
+                    </div>
+                </div>
+                
+                <nav class="sidebar-nav">
+                    <a href="#" class="nav-item active" data-section="machines">
+                        <span class="nav-icon">🏪</span>
+                        <span class="nav-text" data-i18n="nav_machines">Торговые аппараты</span>
+                    </a>
+                    <a href="#" class="nav-item" data-section="calendar">
+                        <span class="nav-icon">📅</span>
+                        <span class="nav-text" data-i18n="nav_calendar">Календарь обслуживания</span>
+                    </a>
+                    <a href="#" class="nav-item" data-section="schedule">
+                        <span class="nav-icon">👨‍💼</span>
+                        <span class="nav-text" data-i18n="nav_schedule">График работ</span>
+                    </a>
+                </nav>
+                
+                <div class="sidebar-footer">
+                    <div class="user-info">
+                        <div class="user-avatar">
+                            <span id="user-avatar">👤</span>
+                        </div>
+                        <div class="user-details">
+                            <span id="user-name" class="user-name">Администратор</span>
+                            <span class="user-role" data-i18n="user_role">Франчайзер</span>
+                        </div>
+                    </div>
+                    <div class="sidebar-actions">
+                        <div class="language-switcher">
+                            <button class="lang-btn active" data-lang="ru">RU</button>
+                            <button class="lang-btn" data-lang="en">EN</button>
+                        </div>
+                        <button id="logout-btn" class="logout-btn" title="Выйти">
+                            <span class="logout-icon">🚪</span>
+                        </button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Основное содержимое -->
+            <main class="main-content">
+                <!-- Верхняя панель -->
+                <header class="top-header">
+                    <div class="header-title">
+                        <h1 id="page-title" data-i18n="page_machines_title">Торговые аппараты</h1>
+                        <p id="page-subtitle" data-i18n="page_machines_subtitle">Управление всеми торговыми аппаратами системы</p>
+                    </div>
+                    <div class="header-actions">
+                        <div class="notification-bell">
+                            <span>🔔</span>
+                            <span class="notification-badge">3</span>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Раздел Торговые аппараты -->
+                <section id="machines-section" class="content-section active">
+                    <!-- Статистика -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon blue">🏪</div>
+                            <div class="stat-info">
+                                <div class="stat-value" id="total-machines">0</div>
+                                <div class="stat-label" data-i18n="stat_total_machines">Всего аппаратов</div>
+                            </div>
+                            <div class="stat-trend up">+2</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon green">✅</div>
+                            <div class="stat-info">
+                                <div class="stat-value" id="working-machines">0</div>
+                                <div class="stat-label" data-i18n="stat_working_machines">Работают</div>
+                            </div>
+                            <div class="stat-trend up">+1</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon orange">🔧</div>
+                            <div class="stat-info">
+                                <div class="stat-value" id="maintenance-machines">0</div>
+                                <div class="stat-label" data-i18n="stat_maintenance_machines">В ремонте</div>
+                            </div>
+                            <div class="stat-trend down">-1</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon purple">💰</div>
+                            <div class="stat-info">
+                                <div class="stat-value" id="total-income">0 ₽</div>
+                                <div class="stat-label" data-i18n="stat_total_income">Общий доход</div>
+                            </div>
+                            <div class="stat-trend up">+5%</div>
+                        </div>
+                    </div>
+
+                    <!-- Панель действий -->
+                    <div class="action-panel">
+                        <div class="action-group">
+                            <button id="add-machine-btn" class="btn-primary">
+                                <span data-i18n="btn_add_machine">+ Добавить аппарат</span>
+                            </button>
+                            <button id="upload-file-btn" class="btn-secondary">
+                                <span data-i18n="btn_upload_file">📁 Загрузить из файла</span>
+                            </button>
+                            <input type="file" id="file-input" accept=".xlsx,.csv" style="display: none;">
+                        </div>
+                        <div class="search-group">
+                            <div class="search-box">
+                                <span class="search-icon">🔍</span>
+                                <input type="text" id="search-input" data-i18n-placeholder="search_placeholder">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Форма добавления аппарата -->
+                    <div id="add-machine-form" class="form-modal" style="display: none;">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 data-i18n="add_machine_title">Добавить новый аппарат</h3>
+                                <button id="close-machine-form" class="close-btn">×</button>
+                            </div>
+                            <form id="machine-form">
+                                <div class="form-grid">
+                                    <div class="input-group">
+                                        <label for="serial-number" data-i18n="label_serial_number">Серийный номер *</label>
+                                        <input type="text" id="serial-number" required>
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="inventory-number" data-i18n="label_inventory_number">Инвентарный номер *</label>
+                                        <input type="text" id="inventory-number" required>
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="location" data-i18n="label_location">Местоположение *</label>
+                                        <input type="text" id="location" required>
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="model" data-i18n="label_model">Модель *</label>
+                                        <input type="text" id="model" required>
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="machine-type" data-i18n="label_machine_type">Тип аппарата *</label>
+                                        <input type="text" id="machine-type" required>
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="manufacturer" data-i18n="label_manufacturer">Производитель</label>
+                                        <input type="text" id="manufacturer" value="Unknown">
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="manufacture-date" data-i18n="label_manufacture_date">Дата производства *</label>
+                                        <input type="date" id="manufacture-date" required>
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="commissioning-date" data-i18n="label_commissioning_date">Дата ввода в эксплуатацию *</label>
+                                        <input type="date" id="commissioning-date" required>
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="status" data-i18n="label_status">Статус</label>
+                                        <select id="status">
+                                            <option value="Работает" data-i18n="status_working">Работает</option>
+                                            <option value="В ремонте/на обслуживании" data-i18n="status_maintenance">В ремонте</option>
+                                        </select>
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="country" data-i18n="label_country">Страна</label>
+                                        <input type="text" id="country" value="Россия">
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn-primary" data-i18n="btn_save_machine">Сохранить аппарат</button>
+                                    <button type="button" id="cancel-machine-btn" class="btn-secondary" data-i18n="btn_cancel">Отмена</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Список аппаратов -->
+                    <div class="content-card">
+                        <div class="card-header">
+                            <h3 data-i18n="machines_list_title">Список аппаратов</h3>
+                            <div class="card-actions">
+                                <button id="refresh-machines" class="btn-icon" title="Обновить">
+                                    <span>🔄</span>
+                                </button>
+                                <button class="btn-icon" title="Экспорт" onclick="exportToCSV()">
+                                    <span>📤</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="table-container">
+                            <table id="machines-table">
+                                <thead>
+                                    <tr>
+                                        <th data-i18n="table_serial_number">Серийный номер</th>
+                                        <th data-i18n="table_inventory_number">Инвентарный номер</th>
+                                        <th data-i18n="table_location">Местоположение</th>
+                                        <th data-i18n="table_model">Модель</th>
+                                        <th data-i18n="table_status">Статус</th>
+                                        <th data-i18n="table_income">Доход</th>
+                                        <th data-i18n="table_actions">Действия</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="machines-list">
+                                    <!-- Данные будут загружаться здесь -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Раздел Календарь обслуживания -->
+                <section id="calendar-section" class="content-section">
+                    <div class="content-card">
+                        <div class="card-header">
+                            <h3 data-i18n="calendar_title">Календарь обслуживания</h3>
+                            <div class="calendar-controls">
+                                <select id="calendar-view" class="select-control">
+                                    <option value="month" data-i18n="calendar_month">Месяц</option>
+                                    <option value="week" data-i18n="calendar_week">Неделя</option>
+                                    <option value="year" data-i18n="calendar_year">Год</option>
+                                </select>
+                                <select id="machine-filter" class="select-control">
+                                    <option value="all" data-i18n="filter_all">Все аппараты</option>
+                                </select>
+                                <div class="date-navigation">
+                                    <button id="prev-period" class="btn-icon">‹</button>
+                                    <span id="current-period">Май 2024</span>
+                                    <button id="next-period" class="btn-icon">›</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="calendar-container">
+                            <div class="calendar-placeholder">
+                                <div class="placeholder-icon">📅</div>
+                                <h3 data-i18n="calendar_title">Календарь обслуживания</h3>
+                                <p data-i18n="calendar_description">Здесь будет отображаться календарь с плановым обслуживанием аппаратов</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Раздел График работ -->
+                <section id="schedule-section" class="content-section">
+                    <div class="content-card">
+                        <div class="card-header">
+                            <h3 data-i18n="schedule_title">График работ</h3>
+                            <div class="schedule-controls">
+                                <select id="schedule-view" class="select-control">
+                                    <option value="day" data-i18n="schedule_day">День</option>
+                                    <option value="week" data-i18n="schedule_week">Неделя</option>
+                                </select>
+                                <select id="employee-filter" class="select-control">
+                                    <option value="all" data-i18n="filter_all_employees">Все сотрудники</option>
+                                </select>
+                                <button id="generate-schedule" class="btn-primary" data-i18n="btn_generate_schedule">Сформировать расписание</button>
+                            </div>
+                        </div>
+                        <div id="schedule-container">
+                            <div class="schedule-placeholder">
+                                <div class="placeholder-icon">👨‍💼</div>
+                                <h3 data-i18n="schedule_title">График работ сотрудников</h3>
+                                <p data-i18n="schedule_description">Здесь будет отображаться график работ с возможностью drag-and-drop</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Модальные окна -->
+    <div id="modal-overlay" class="modal-overlay" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h4 id="modal-title">Уведомление</h4>
+                <button id="modal-close" class="modal-close">×</button>
+            </div>
+            <div class="modal-body">
+                <p id="modal-message">Сообщение</p>
+            </div>
+            <div class="modal-footer">
+                <button id="modal-confirm" class="btn-primary">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
